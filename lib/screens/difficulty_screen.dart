@@ -74,8 +74,14 @@ class DifficultyScreen extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => GameScreen()));
+          onTap: () async {
+            final result = await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => GameScreen(difficulty: difficulty)),
+            );
+            if (result == true) {
+              Navigator.of(context).pop(true);
+            }
           },
           child: Padding(
             padding: const EdgeInsets.all(20),

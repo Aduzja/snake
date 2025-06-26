@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       const SizedBox(height: 50),
-                     _buildMenuButton(
+                      _buildMenuButton(
                         text: 'QUICK GAME',
                         icon: Icons.flash_on,
                         onPressed: () async {
@@ -131,38 +131,38 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildMenuButton({
-  required String text,
-  required IconData icon,
-  required VoidCallback onPressed,
-  bool isPrimary = false,
-  Color? customColor,
-}) {
-  return SizedBox(
-    width: double.infinity,
-    height: 56,
-    child: ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: customColor ?? (isPrimary ? GameColors.snakeHead : GameColors.board),
-        foregroundColor: isPrimary ? Colors.white : GameColors.text,
-        side: isPrimary ? null : BorderSide(color: (customColor ?? GameColors.snakeHead).withOpacity(0.5)),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+    required String text,
+    required IconData icon,
+    required VoidCallback onPressed,
+    bool isPrimary = false,
+    Color? customColor,
+  }) {
+    return SizedBox(
+      width: double.infinity,
+      height: 56,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: customColor ?? (isPrimary ? GameColors.snakeHead : GameColors.board),
+          foregroundColor: isPrimary ? Colors.white : GameColors.text,
+          side: isPrimary
+              ? null
+              : BorderSide(
+                  color: Color.fromARGB(
+                    128,
+                    (customColor ?? GameColors.snakeHead).red,
+                    (customColor ?? GameColors.snakeHead).green,
+                    (customColor ?? GameColors.snakeHead).blue,
+                  ),
+                ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        textStyle: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [Icon(icon), const SizedBox(width: 12), Text(text)],
         ),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon),
-          const SizedBox(width: 12),
-          Text(text),
-        ],
-      ),
-    ),
-  );
-}
+    );
+  }
 }
