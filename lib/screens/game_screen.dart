@@ -1,14 +1,16 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:snake/controllers/game_controller.dart';
-import 'package:snake/models/direction.dart'; 
+import 'package:snake/models/difficulty.dart';
+import 'package:snake/models/direction.dart';
 import 'package:snake/utilis/constants.dart';
 import 'package:snake/widgets/game_board.dart';
 import 'package:snake/widgets/game_over_dialog.dart';
-  
+
 class GameScreen extends StatefulWidget {
-  const GameScreen({super.key});
+  final Difficulty difficulty;
+
+  const GameScreen({super.key, this.difficulty = Difficulty.normal});
 
   @override
   State<GameScreen> createState() => _GameScreenState();
@@ -22,7 +24,7 @@ class _GameScreenState extends State<GameScreen> {
   @override
   void initState() {
     super.initState();
-    _gameController = GameController();
+    _gameController = GameController(difficulty: widget.difficulty);
     _gameController.addListener(_onGameStateChanged);
     _initializeGame();
   }
@@ -180,12 +182,27 @@ class _GameScreenState extends State<GameScreen> {
       child: Scaffold(
         backgroundColor: GameColors.background,
         appBar: AppBar(
-          title: Row(
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Score: ${_gameController.score}'),
-              const Spacer(),
-              if (_gameController.highScore > 0)
-                Text('Best: ${_gameController.highScore}', style: const TextStyle(color: Colors.amber, fontSize: 14)),
+              Row(
+                children: [
+                  Text('Score: ${_gameController.score}'),
+                  const Spacer(),
+                  if (_gameController.highScore > 0)
+                    Text(
+                      'Best: ${_gameController.highScore}',
+                      style: const TextStyle(color: Colors.amber, fontSize: 14),
+                    ),
+                ],
+              ),
+              Row(
+                children: [
+                  Icon(widget.difficulty.icon, color: widget.difficulty.color, size: 16),
+                  const SizedBox(width: 4),
+                  Text(widget.difficulty.name, style: TextStyle(color: widget.difficulty.color, fontSize: 12)),
+                ],
+              ),
             ],
           ),
           actions: [IconButton(icon: Icon(_getAppBarIcon()), onPressed: _handleAppBarAction)],

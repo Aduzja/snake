@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snake/screens/difficulty_screen.dart';
 import 'package:snake/screens/game_screen.dart';
 import 'package:snake/screens/statistics_screen.dart';
 import 'package:snake/services/high_score_service.dart';
@@ -83,9 +84,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       const SizedBox(height: 50),
-                      _buildMenuButton(
-                        text: 'START GAME',
-                        icon: Icons.play_arrow,
+                     _buildMenuButton(
+                        text: 'QUICK GAME',
+                        icon: Icons.flash_on,
                         onPressed: () async {
                           final result = await Navigator.push(
                             context,
@@ -96,6 +97,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           }
                         },
                         isPrimary: true,
+                      ),
+                      const SizedBox(height: 16),
+                      _buildMenuButton(
+                        text: 'CHOOSE DIFFICULTY',
+                        icon: Icons.speed,
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const DifficultyScreen()));
+                        },
                       ),
                       const SizedBox(height: 16),
                       _buildMenuButton(
@@ -122,28 +131,38 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildMenuButton({
-    required String text,
-    required IconData icon,
-    required VoidCallback onPressed,
-    bool isPrimary = false,
-  }) {
-    return SizedBox(
-      width: double.infinity,
-      height: 56,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: isPrimary ? GameColors.snakeHead : GameColors.board,
-          foregroundColor: isPrimary ? Colors.white : GameColors.text,
-          side: isPrimary ? null : BorderSide(color: GameColors.snakeHead.withAlpha((0.5 * 255).round())),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+  required String text,
+  required IconData icon,
+  required VoidCallback onPressed,
+  bool isPrimary = false,
+  Color? customColor,
+}) {
+  return SizedBox(
+    width: double.infinity,
+    height: 56,
+    child: ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: customColor ?? (isPrimary ? GameColors.snakeHead : GameColors.board),
+        foregroundColor: isPrimary ? Colors.white : GameColors.text,
+        side: isPrimary ? null : BorderSide(color: (customColor ?? GameColors.snakeHead).withOpacity(0.5)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [Icon(icon), const SizedBox(width: 12), Text(text)],
+        textStyle: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
         ),
       ),
-    );
-  }
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon),
+          const SizedBox(width: 12),
+          Text(text),
+        ],
+      ),
+    ),
+  );
+}
 }
