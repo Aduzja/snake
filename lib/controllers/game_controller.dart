@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:snake/models/difficulty.dart';
 import 'package:snake/models/direction.dart';
 import 'package:snake/models/position.dart';
 import 'package:snake/models/snake.dart';
@@ -10,6 +11,8 @@ import 'package:snake/utilis/constants.dart';
 enum GameState { ready, running, paused, gameOver }
 
 class GameController extends ChangeNotifier {
+  final Difficulty difficulty;
+
   Snake _snake = Snake(
     body: const [Position(x: 10, y: 10), Position(x: 9, y: 10), Position(x: 8, y: 10)],
     direction: Direction.right,
@@ -22,6 +25,8 @@ class GameController extends ChangeNotifier {
   GameState _gameState = GameState.ready;
   Timer? _gameTimer;
   late HighScoreService _highScoreService;
+
+  GameController({this.difficulty = Difficulty.normal});
 
   Snake get snake => _snake;
   Position? get food => _food;
@@ -72,7 +77,7 @@ class GameController extends ChangeNotifier {
   }
 
   void _startGameLoop() {
-    _gameTimer = Timer.periodic(GameSettings.defaultGameSpeed, (timer) {
+    _gameTimer = Timer.periodic(difficulty.speed, (timer) {
       _updateGame();
     });
   }
@@ -83,7 +88,7 @@ class GameController extends ChangeNotifier {
     final nextHeadPosition = _getNextHeadPosition();
     if (_food != null && nextHeadPosition == _food) {
       _snake = _snake.grow();
-      _score += GameSettings.pointsPerFood;
+      _score += GameSettings.pointsPerFood * difficulty.pointsMultiplier;
 
       if (_score > _highScore) {
         _highScore = _score;
