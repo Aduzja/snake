@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snake/services/high_score_service.dart';
-import 'package:snake/utilis/contsants.dart';
+import 'package:snake/utilis/constants.dart';
 
 class StatisticsScreen extends StatefulWidget {
   const StatisticsScreen({super.key});
