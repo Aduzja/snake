@@ -5,7 +5,7 @@ import 'package:snake/models/direction.dart';
 import 'package:snake/models/position.dart';
 import 'package:snake/models/snake.dart';
 import 'package:snake/services/high_score_service.dart';
-import 'package:snake/utilis/contsants.dart';
+import 'package:snake/utilis/constants.dart';
 
 enum GameState { ready, running, paused, gameOver }
 

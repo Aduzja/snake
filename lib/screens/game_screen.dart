@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:snake/controllers/game_controller.dart';
 import 'package:snake/models/direction.dart'; 
-import 'package:snake/utilis/contsants.dart';
+import 'package:snake/utilis/constants.dart';
 import 'package:snake/widgets/game_board.dart';
 import 'package:snake/widgets/game_over_dialog.dart';
   
