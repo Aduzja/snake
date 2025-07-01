@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snake/cubit/game_cubit.dart';
 import 'package:snake/screens/home_screen.dart';
 
 void main() {
@@ -10,11 +12,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Snake Game',
-      theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.green), useMaterial3: true),
-      home: const HomeScreen(),
-      debugShowCheckedModeBanner: false,
+    return BlocProvider(
+      create: (context) => GameCubit(),
+      child: MaterialApp(
+        title: 'Snake Game',
+        theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.green), useMaterial3: true),
+        home: const HomeScreen(),
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }
