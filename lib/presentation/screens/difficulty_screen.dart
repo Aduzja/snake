@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snake/models/difficulty.dart';
-import 'package:snake/screens/game_screen.dart';
+import 'package:snake/presentation/screens/game_screen.dart';
 import 'package:snake/utilis/constants.dart';
 
 class DifficultyScreen extends StatelessWidget {
@@ -59,12 +59,22 @@ class DifficultyScreen extends StatelessWidget {
         color: GameColors.board,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Color.fromARGB(77, difficulty.color.red, difficulty.color.green, difficulty.color.blue),
+          color: Color.fromARGB(
+            77,
+            (difficulty.color.r * 255.0).round() & 0xff,
+            (difficulty.color.g * 255.0).round() & 0xff,
+            (difficulty.color.b * 255.0).round() & 0xff,
+          ),
           width: 2,
         ),
         boxShadow: [
           BoxShadow(
-            color: Color.fromARGB(26, difficulty.color.red, difficulty.color.green, difficulty.color.blue),
+            color: Color.fromARGB(
+              26,
+              (difficulty.color.r * 255.0).round() & 0xff,
+              (difficulty.color.g * 255.0).round() & 0xff,
+              (difficulty.color.b * 255.0).round() & 0xff,
+            ),
             blurRadius: 8,
             spreadRadius: 2,
           ),
@@ -79,6 +89,7 @@ class DifficultyScreen extends StatelessWidget {
               context,
               MaterialPageRoute(builder: (context) => GameScreen(difficulty: difficulty)),
             );
+            if (!context.mounted) return;
             if (result == true) {
               Navigator.of(context).pop(true);
             }
@@ -90,7 +101,12 @@ class DifficultyScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(51, difficulty.color.red, difficulty.color.green, difficulty.color.blue),
+                    color: Color.fromARGB(
+                      51,
+                      (difficulty.color.r * 255.0).round() & 0xff,
+                      (difficulty.color.g * 255.0).round() & 0xff,
+                      (difficulty.color.b * 255.0).round() & 0xff,
+                    ),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(difficulty.icon, color: difficulty.color, size: 32),

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snake/cubit/game_state.dart';
+import 'package:snake/presentation/cubit/game_state.dart';
 import 'package:snake/models/difficulty.dart';
 import 'package:snake/models/direction.dart';
 import 'package:snake/models/position.dart';
@@ -155,6 +155,22 @@ class GameCubit extends Cubit<GameState> {
 
     emit(state.copyWith(snake: initialSnake, food: null, score: 0, isNewHighScore: false));
     _gameTimer?.cancel();
+  }
+
+  Future<void> clearStats() async {
+    await _highScoreService.clearStats();
+    final highScore = _highScoreService.getHighScore();
+    final gamesPlayed = _highScoreService.getGamesPlayed();
+    final totalScore = _highScoreService.getTotalScore();
+    final averageScore = _highScoreService.getAverageScore();
+    emit(
+      state.copyWith(
+        highScore: highScore,
+        gamesPlayed: gamesPlayed,
+        totalScore: totalScore,
+        averageScore: averageScore,
+      ),
+    );
   }
 
   @override

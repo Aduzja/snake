@@ -12,6 +12,9 @@ class GameState extends Equatable {
   final int highScore;
   final bool isNewHighScore;
   final GameStatus status;
+  final int? gamesPlayed;
+  final int? totalScore;
+  final double? averageScore;
 
   const GameState({
     required this.snake,
@@ -20,6 +23,9 @@ class GameState extends Equatable {
     required this.highScore,
     required this.isNewHighScore,
     required this.status,
+    this.gamesPlayed,
+    this.totalScore,
+    this.averageScore,
   });
 
   factory GameState.initial() {
@@ -33,6 +39,9 @@ class GameState extends Equatable {
       highScore: 0,
       isNewHighScore: false,
       status: GameStatus.ready,
+      gamesPlayed: null,
+      totalScore: null,
+      averageScore: null,
     );
   }
 
@@ -43,6 +52,9 @@ class GameState extends Equatable {
     int? highScore,
     bool? isNewHighScore,
     GameStatus? status,
+    int? gamesPlayed,
+    int? totalScore,
+    double? averageScore,
   }) {
     return GameState(
       snake: snake ?? this.snake,
@@ -51,11 +63,24 @@ class GameState extends Equatable {
       highScore: highScore ?? this.highScore,
       isNewHighScore: isNewHighScore ?? this.isNewHighScore,
       status: status ?? this.status,
+      gamesPlayed: gamesPlayed ?? this.gamesPlayed,
+      totalScore: totalScore ?? this.totalScore,
+      averageScore: averageScore ?? this.averageScore,
     );
   }
 
   bool get isGameRunning => status == GameStatus.running;
 
   @override
-  List<Object?> get props => [snake, food, score, highScore, isNewHighScore, status];
+  List<Object?> get props => [
+    snake,
+    food,
+    score,
+    highScore,
+    isNewHighScore,
+    status,
+    gamesPlayed,
+    totalScore,
+    averageScore,
+  ];
 }
