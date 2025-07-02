@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:snake/models/direction.dart';
 import 'package:snake/models/position.dart';
 import 'package:snake/models/snake.dart';
+import 'package:snake/models/difficulty.dart';
 
 enum GameStatus { ready, running, paused, gameOver }
 
@@ -15,6 +16,7 @@ class GameState extends Equatable {
   final int? gamesPlayed;
   final int? totalScore;
   final double? averageScore;
+  final Difficulty difficulty;
 
   const GameState({
     required this.snake,
@@ -26,11 +28,12 @@ class GameState extends Equatable {
     this.gamesPlayed,
     this.totalScore,
     this.averageScore,
+    required this.difficulty,
   });
 
-  factory GameState.initial() {
-    return const GameState(
-      snake: Snake(
+  factory GameState.initial({Difficulty difficulty = Difficulty.normal}) {
+    return GameState(
+      snake: const Snake(
         body: [Position(x: 10, y: 10), Position(x: 9, y: 10), Position(x: 8, y: 10)],
         direction: Direction.right,
       ),
@@ -42,6 +45,7 @@ class GameState extends Equatable {
       gamesPlayed: null,
       totalScore: null,
       averageScore: null,
+      difficulty: difficulty,
     );
   }
 
@@ -55,6 +59,7 @@ class GameState extends Equatable {
     int? gamesPlayed,
     int? totalScore,
     double? averageScore,
+    Difficulty? difficulty,
   }) {
     return GameState(
       snake: snake ?? this.snake,
@@ -66,6 +71,7 @@ class GameState extends Equatable {
       gamesPlayed: gamesPlayed ?? this.gamesPlayed,
       totalScore: totalScore ?? this.totalScore,
       averageScore: averageScore ?? this.averageScore,
+      difficulty: difficulty ?? this.difficulty,
     );
   }
 
@@ -82,5 +88,6 @@ class GameState extends Equatable {
     gamesPlayed,
     totalScore,
     averageScore,
+    difficulty,
   ];
 }

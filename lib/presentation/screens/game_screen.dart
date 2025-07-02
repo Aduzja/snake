@@ -76,6 +76,9 @@ class GameScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<GameCubit>().resetGameWithDifficulty(difficulty);
+    });
     final FocusNode focusNode = FocusNode();
     return BlocListener<GameCubit, GameState>(
       listenWhen: (previous, current) =>

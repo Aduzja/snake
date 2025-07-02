@@ -10,16 +10,25 @@ import 'package:snake/services/high_score_service.dart';
 import 'package:snake/utilis/constants.dart';
 
 class GameCubit extends Cubit<GameState> {
-  final Difficulty difficulty;
   Timer? _gameTimer;
   late HighScoreService _highScoreService;
 
-  GameCubit({this.difficulty = Difficulty.normal}) : super(GameState.initial());
+  GameCubit() : super(GameState.initial());
 
   Future<void> initialize() async {
     _highScoreService = await HighScoreService.getInstance();
     final highScore = _highScoreService.getHighScore();
-    emit(state.copyWith(highScore: highScore));
+    final gamesPlayed = _highScoreService.getGamesPlayed();
+    final totalScore = _highScoreService.getTotalScore();
+    final averageScore = _highScoreService.getAverageScore();
+    emit(
+      state.copyWith(
+        highScore: highScore,
+        gamesPlayed: gamesPlayed,
+        totalScore: totalScore,
+        averageScore: averageScore,
+      ),
+    );
   }
 
   void startGame() {
@@ -55,7 +64,7 @@ class GameCubit extends Cubit<GameState> {
   }
 
   void _startGameLoop() {
-    _gameTimer = Timer.periodic(difficulty.speed, (timer) {
+    _gameTimer = Timer.periodic(state.difficulty.speed, (timer) {
       _updateGame();
     });
   }
@@ -70,7 +79,7 @@ class GameCubit extends Cubit<GameState> {
 
     if (state.food != null && nextHeadPosition == state.food) {
       newSnake = state.snake.grow();
-      newScore += GameSettings.pointsPerFood * difficulty.pointsMultiplier;
+      newScore += GameSettings.pointsPerFood * state.difficulty.pointsMultiplier;
 
       if (newScore > state.highScore) {
         newHighScoreFlag = true;
@@ -145,6 +154,21 @@ class GameCubit extends Cubit<GameState> {
     await _highScoreService.incrementGamesPlayed();
     await _highScoreService.addToTotalScore(state.score);
     await _highScoreService.setHighScore(state.score);
+
+    final highScore = _highScoreService.getHighScore();
+    final gamesPlayed = _highScoreService.getGamesPlayed();
+    final totalScore = _highScoreService.getTotalScore();
+    final averageScore = _highScoreService.getAverageScore();
+
+    emit(
+      state.copyWith(
+        status: GameStatus.gameOver,
+        highScore: highScore,
+        gamesPlayed: gamesPlayed,
+        totalScore: totalScore,
+        averageScore: averageScore,
+      ),
+    );
   }
 
   void _resetGame() {
@@ -171,6 +195,10 @@ class GameCubit extends Cubit<GameState> {
         averageScore: averageScore,
       ),
     );
+  }
+
+  void resetGameWithDifficulty(Difficulty difficulty) {
+    emit(GameState.initial(difficulty: difficulty));
   }
 
   @override
